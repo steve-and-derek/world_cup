@@ -6,27 +6,19 @@ class WorldCup
     @teams = teams
   end
 
+  def all_active_teams
+    @teams.find_all {|team| !team.eliminated?}
+  end
+
   def active_players_by_position(position)
+    all_active_teams.map {|team| team.players_by_position(position)}.flatten
+  end
 
-    active_teams = @teams.find_all do |team|
-      !team.eliminated?
-    end
-
-    players_by_position = []
-    active_teams.each do |team|
-      players_by_position << team.players_by_position(position)
-    end
-    players_by_position.flatten
+  def all_players
+    @teams.map {|team| team.players}.flatten
   end
 
   def all_players_by_position
-    all_players = @teams.map do |team|
-      team.players
-    end.flatten
-
-    grouped_all_players = all_players.group_by do |player|
-      player.position
-    end
-    grouped_all_players
+    all_players.group_by {|player| player.position}
   end
 end
