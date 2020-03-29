@@ -18,7 +18,33 @@ class TeamTest < Minitest::Test
   end
 
   def test_can_be_eliminated
+    team = Team.new("France")
 
+    assert_equal false, team.eliminated?
+    assert_equal true, team.eliminated(true)
+    assert_equal true, team.eliminated?
+  end
+
+  def test_can_add_players_to_team
+    team = Team.new("France")
+    mbappe = Player.new({name: "Kylian Mbappe", position: "forward"})
+    pogba = Player.new({name: "Paul Pogba", position: "midfielder"})
+
+    assert_equal [], team.players
+
+    team.add_player(mbappe)
+    team.add_player(pogba)
+
+    assert_equal [mbappe, pogba], team.players
+  end
+
+  def test_players_by_position
+    team = Team.new("France")
+    mbappe = Player.new({name: "Kylian Mbappe", position: "forward"})
+    pogba = Player.new({name: "Paul Pogba", position: "midfielder"})
+
+    assert_equal [pogba], team.players_by_position("midfielder")
+    assert_equal [], team.players_by_position("defender")
   end
 
 
@@ -26,32 +52,6 @@ class TeamTest < Minitest::Test
 end
 
 
-# pry(main)> team.eliminated?
-# # => false
-#
-# pry(main)> team.eliminated = true
-#
-# pry(main)> team.eliminated?
-# # => true
-#
-# pry(main)> team.players
-# # => []
-#
-# pry(main)> mbappe = Player.new({name: "Kylian Mbappe", position: "forward"})
-# # => #<Player:0x00007fe0d02bd280...>
-#
-# pry(main)> pogba = Player.new({name: "Paul Pogba", position: "midfielder"})
-# # => #<Player:0x00007fe0d0851138...>
-#
-# pry(main)> team.add_player(mbappe)
-#
-# pry(main)> team.add_player(pogba)
-#
-# pry(main)> team.players
-# # => [#<Player:0x00007fe0d02bd280...>, #<Player:0x00007fe0d0851138...>]
-#
-# pry(main)> team.players_by_position("midfielder")
 # # => [#<Player:0x00007fe0d0851138...>]
 #
-# pry(main)> team.players_by_position("defender")
 # # => []
