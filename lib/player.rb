@@ -5,5 +5,4 @@ class Player
     @name = init_hash[:name]
     @position = init_hash[:position]
   end
-
 end
