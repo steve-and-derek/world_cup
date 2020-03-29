@@ -16,7 +16,7 @@ class WorldCupTest < Minitest::Test
     @croatia = Team.new("Croatia")
     @modric = Player.new({name: "Luka Modric", position: "midfielder"})
     @vida = Player.new({name: "Domagoj Vida", position: "defender"})
-    @croatia.add_player(@odric)
+    @croatia.add_player(@modric)
     @croatia.add_player(@vida)
 
     @world_cup = WorldCup.new(2018, [@france, @croatia])
@@ -33,26 +33,20 @@ class WorldCupTest < Minitest::Test
     assert_equal [@france, @croatia], @world_cup.teams
   end
 
+  def test_active_players_by_position
 
+    assert_equal [@pogba, @modric], @world_cup.active_players_by_position("midfielder")
 
+    @croatia.eliminated(true)
 
+    assert_equal [@pogba], @world_cup.active_players_by_position("midfielder")
+  end
 end
 
-# ## Iteration 3
-#
-# Use TDD to create a `WorldCup` class that responds to the following interaction pattern. For the `active_players_by_position` method, an active player is a player that is on a team that is not eliminated.
-
-# world_cup.year
-# # => 2018
-#
-# world_cup.teams
-# # => [#<Team:0x00007f936a313698...>, #<Team:0x00007f936a3afea8...>]
-#
-# world_cup.active_players_by_position("midfielder")
-# # => [#<Player:0x00007f936c035eb0...>, #<Player:0x00007f936a3595f8...>]
-#
-# croatia.eliminated = true
-#
-# world_cup.active_players_by_position("midfielder")
-# # => [#<Player:0x00007f936c035eb0...>]
-# ```
+  # world_cup.all_players_by_position
+  # =>
+  #   {
+  #     "forward" => [#<Player:0x00007ffb3a8a8fd0...>],
+  #     "midfielder" => [#<Player:0x00007ffb39a2dd48...>, #<Player:0x00007ffb3a054730...>],
+  #     "defender" => [#<Player:0x00007ffb3a8dbb38...>]
+  #   }
